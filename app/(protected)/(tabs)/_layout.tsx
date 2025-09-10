@@ -25,7 +25,7 @@ export default function AuthRoutesLayout() {
 				}}
 			/>
 			<Tabs.Screen
-				name="listePlants"
+				name="listPlants"
 				options={{
 					title: "My plants",
 					tabBarIcon: ({ size, color }) => (

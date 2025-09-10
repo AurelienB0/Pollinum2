@@ -19,9 +19,9 @@ const select = () => {
 	const router = useRouter();
 	const [inputList, setInputList] = useState<typeof allObjects>([]);
 	const [searchBarValue, setSearchBarValue] = useState("");
-	const [tag, setTag] = useState<"Flowering plant" | "Culinary" | "Succulents & Cacti" | "null">(
-		"null"
-	);
+	const [tag, setTag] = useState<
+		"Flowering plant" | "Culinary" | "Succulents & Cacti" | "null"
+	>("null");
 
 	//change the inputlist in regards to the tags and the change in the search bar
 	function updateSearch(Textquery: string) {
@@ -41,7 +41,7 @@ const select = () => {
 		<View style={{ flex: 1 }}>
 			<Pressable
 				onPress={() => {
-					router.replace("/(tabs)/interiorPlants");
+					router.replace("/interiorPlants");
 				}}
 			>
 				<Ionicons name="arrow-back" size={50} />
@@ -71,13 +71,21 @@ const select = () => {
 								>
 									<Image
 										style={styles.img}
-										source={allImages[item.name] ? allImages[item.name] : allImages["marguerite"]}
+										source={
+											allImages[item.name]
+												? allImages[item.name]
+												: allImages["marguerite"]
+										}
 									/>
 									<Text style={styles.cardText}>{item.name}</Text>
 								</TouchableOpacity>
 							);
 						} else {
-							return <View style={[styles.card, { backgroundColor: "transparent" }]} />;
+							return (
+								<View
+									style={[styles.card, { backgroundColor: "transparent" }]}
+								/>
+							);
 						}
 					}}
 					keyExtractor={(item) => item.name}

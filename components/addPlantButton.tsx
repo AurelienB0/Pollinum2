@@ -43,7 +43,6 @@ const AddPlantButton = ({
 	setError,
 }: Props) => {
 	const router = useRouter();
-
 	const { supabase } = useSupabase();
 	const { userId } = useAuth();
 	const [Loading, setLoading] = useState(false);
@@ -112,8 +111,9 @@ const AddPlantButton = ({
 			]);
 			setLoading(false);
 			setError(error ? error.toString() : null); // necessaire pr postgress
-			router.replace("/(tabs)/listePlants");
-			// console.log("plant sent");
+			router.replace("/(protected)/(tabs)/listPlants");
+
+			console.log("plant sent");
 		}
 	}
 

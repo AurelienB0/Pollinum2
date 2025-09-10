@@ -5,6 +5,7 @@ import React from "react";
 import SupabaseProvider from "@/providers/SupabaseProvider";
 import { useAuth } from "@clerk/clerk-expo"; // <-- use the Expo version
 import { Redirect, Stack } from "expo-router";
+import PlantProvider from "@/providers/PlantProvider";
 
 export function ProtectedLayout({ children }: { children: React.ReactNode }) {
 	return <SupabaseProvider>{children}</SupabaseProvider>;
@@ -29,7 +30,9 @@ export default function AppLayout() {
 
 	return (
 		<ProtectedLayout>
-			<Stack screenOptions={{ headerShown: false }} />
+			<PlantProvider>
+				<Stack screenOptions={{ headerShown: false }} />
+			</PlantProvider>
 		</ProtectedLayout>
 	);
 }
