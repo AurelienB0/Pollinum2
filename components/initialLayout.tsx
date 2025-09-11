@@ -4,7 +4,6 @@ import { useEffect } from "react";
 
 export default function InitialLayout() {
 	const { isLoaded, isSignedIn } = useAuth();
-
 	const segments = useSegments();
 	const router = useRouter();
 
@@ -13,7 +12,7 @@ export default function InitialLayout() {
 
 		const inAuthScreen = segments[0] === "(auth)";
 
-		if (!isSignedIn && !inAuthScreen) router.replace("/(auth)/login");
+		if (!isSignedIn && !inAuthScreen) router.replace("/signup");
 		else if (isSignedIn && inAuthScreen)
 			router.replace("/(protected)/(tabs)/interiorPlants");
 	}, [isLoaded, isSignedIn, segments]);
