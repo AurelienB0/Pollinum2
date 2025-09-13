@@ -11,24 +11,25 @@ export default function LoadPlantsData() {
 	const [error, setError] = useState<string | null>("");
 
 	const loadPlants = useCallback(async () => {
+		{
+			/*
 		if (!session || !supabase) {
 			return; // Don't fetch if dependencies aren't ready
 		}
 		setLoading(true);
 		setError(null);
-
 		const { data, error: dbError } = await supabase.from("plants").select();
-
+		A REMETTTRE APRES JUSTE PR DEV
 		if (dbError) {
 			console.error(dbError);
 			setError("Failed to fetch plants.");
 		} else if (data) {
 			setPlants(data);
+		}*/
 		}
 		setLoading(false);
 	}, [session, supabase, setPlants]);
 
-	// The useEffect to trigger the fetch lives here
 	useEffect(() => {
 		loadPlants();
 	}, [loadPlants]);

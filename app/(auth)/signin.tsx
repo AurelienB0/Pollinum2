@@ -55,7 +55,7 @@ export default function SignUpScreen() {
 			// and redirect the user
 			if (signInAttempt.status === "complete") {
 				await setActive({ session: signInAttempt.createdSessionId });
-				router.replace("/");
+				router.replace("/(protected)/(tabs)");
 			} else {
 				// If the status isn't complete, check why. User might need to
 				// complete further steps.
@@ -77,33 +77,6 @@ export default function SignUpScreen() {
 	};
 
 	return (
-		// <View style={styles.container}>
-		// 	<>
-		// 		<Text>Sign up</Text>
-		// 		<TextInput
-		// 			autoCapitalize="none"
-		// 			value={emailAddress}
-		// 			placeholder="Enter email"
-		// 			onChangeText={(email) => setEmailAddress(email)}
-		// 		/>
-		// 		<TextInput
-		// 			value={password}
-		// 			placeholder="Enter password"
-		// 			secureTextEntry={true}
-		// 			onChangeText={(password) => setPassword(password)}
-		// 		/>
-		// 		<TouchableOpacity onPress={onSignInPress}>
-		// 			<Text>Continue</Text>
-		// 		</TouchableOpacity>
-		// 		<View style={{ display: "flex", flexDirection: "row", gap: 3 }}>
-		// 			<Text>Already have an account?</Text>
-		// 			<Link href="/signup">
-		// 				<Text>Sign in</Text>
-		// 			</Link>
-		// 		</View>
-		// 	</>
-		// </View>
-
 		<KeyboardAvoidingView
 			behavior={Platform.OS === "ios" ? "padding" : "height"}
 			style={{ flex: 1 }}
