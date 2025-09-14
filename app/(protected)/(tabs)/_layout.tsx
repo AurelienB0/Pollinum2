@@ -34,7 +34,7 @@ export default function AuthRoutesLayout() {
 			<Tabs.Screen
 				name="page"
 				options={{
-					title: "test",
+					title: "page",
 				}}
 			/>
 		</Tabs>

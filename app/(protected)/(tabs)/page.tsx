@@ -1,181 +1,326 @@
+"use client";
 import { allImages } from "@/assets/images/plantsImports";
 import Spacer from "@/components/Spacer";
-import Tags from "@/components/tags";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
-import {
-	Dimensions,
-	FlatList,
-	Image,
-	Pressable,
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from "react-native";
-import allObjects from "../../../assets/allPlantsObject";
+import { Link, useRouter } from "expo-router";
+import { useState } from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
-const screenWidth = Dimensions.get("window").width;
-
-const page = () => {
-	const screenWidth = Dimensions.get("window").width;
-	const router = useRouter();
-	const [inputList, setInputList] = useState<typeof allObjects>([]);
-	const [searchBarValue, setSearchBarValue] = useState("");
-	const [tag, setTag] = useState<
-		"Flowering plant" | "Culinary" | "Succulents & Cacti" | "null"
-	>("null");
-
-	//change the inputlist in regards to the tags and the change in the search bar
-	function updateSearch(Textquery: string) {
-		setSearchBarValue(Textquery);
-
-		const tmp = allObjects.filter((item) =>
-			item.name.toLowerCase().startsWith(Textquery.trim().toLowerCase())
-		);
-		const tmp2 = tmp.filter((item) => tag === "null" || item.category === tag);
-		const EMPTY_ITEM = { name: "__empty__", category: "__empty__" };
-		setInputList(tmp2.length % 2 === 0 ? tmp2 : [...tmp2, EMPTY_ITEM]);
-	}
-
-	useEffect(() => updateSearch(searchBarValue), [tag]);
-
-	return (
-		<View style={styles.container}>
-			<View style={styles.viewtitle}>
-				<Pressable
-					onPress={() => {
-						router.back();
-					}}
-				>
-					<Ionicons name="arrow-back" style={styles.icon} size={30} />
-				</Pressable>
-				<Text style={styles.title}>What's your plant ?</Text>
-				<View style={{ width: 30 }} />
-			</View>
-			<Spacer space={20} />
-			<View style={styles.search}>
-				<Ionicons name="search" size={22} />
-				<TextInput
-					placeholder="Search by name"
-					clearButtonMode="always"
-					value={searchBarValue}
-					style={{ includeFontPadding: false }}
-					onChangeText={(query) => updateSearch(query)}
-				/>
-			</View>
-			<Tags tag={tag} setTag={setTag} />
-			<Spacer space={10} />
-
-			<FlatList
-				data={inputList}
-				numColumns={2}
-				columnWrapperStyle={{ gap: screenWidth * 0.02 }}
-				renderItem={({ item }) => {
-					if (item.name !== "__empty__") {
-						return (
-							<TouchableOpacity
-								activeOpacity={0.5}
-								onPress={() => {
-									router.push(`./${item.name}`);
-								}}
-							>
-								<View style={styles.card}>
-									<Image
-										style={styles.img}
-										source={
-											allImages[item.name]
-												? allImages[item.name]
-												: allImages["marguerite"]
-										}
-									/>
-									<View style={styles.viewTxt}>
-										<Text style={styles.cardText}>{item.name}</Text>{" "}
-									</View>
-								</View>
-								<View style={styles.border}></View>
-							</TouchableOpacity>
-						);
-					} else {
-						return <View />;
-					}
-				}}
-				keyExtractor={(item) => item.name}
-			/>
-		</View>
-	);
+type ReminderData = {
+	value: string | null;
+	unit: string;
+	timer: string;
+	schedule: string;
+	hasUnit: boolean;
+	last_care: null;
 };
 
-export default page;
+export default function Home() {
+	const router = useRouter();
+	//const params = useLocalSearchParams();
+	const params = { plante: ["a"] };
+	const plante = Array.isArray(params.plante)
+		? params.plante[0]
+		: params.plante ?? "";
+
+	const [moreInfo, setMoreInfo] = useState("");
+	const [name, setName] = useState("");
+	const [error, setError] = useState<string | null>(null);
+
+	const [reminders, setReminders] = useState<Record<string, ReminderData>>({
+		water: {
+			value: null,
+			unit: "mL",
+			timer: "1",
+			schedule: "Morning 8:00",
+			hasUnit: true,
+			last_care: null,
+		},
+		fog: {
+			value: null,
+			unit: "mL",
+			timer: "1",
+			schedule: "Morning 8:00",
+			hasUnit: true,
+			last_care: null,
+		},
+		sun: {
+			value: null,
+			unit: "",
+			timer: "1",
+			schedule: "Morning 8:00",
+			hasUnit: false,
+			last_care: null,
+		},
+		shade: {
+			value: null,
+			unit: "",
+			timer: "1",
+			schedule: "Morning 8:00",
+			hasUnit: false,
+			last_care: null,
+		},
+	});
+
+	const updateReminder = (
+		key: string,
+		field: keyof ReminderData,
+		newValue: any
+	) => {
+		setReminders((prev) => ({
+			...prev,
+			[key]: {
+				...prev[key],
+				[field]: newValue,
+			},
+		}));
+	};
+
+	const local_data = [
+		{ value: "mL", label: "mL" },
+		{ value: "L", label: "L" },
+	];
+
+	return (
+		<>
+			<Image
+				style={styles.img}
+				source={allImages[plante] ? allImages[plante] : allImages["marguerite"]}
+			/>
+			<View style={styles.container}>
+				<View style={styles.header}>
+					<Text style={styles.title}>Une plante</Text>
+					<Pressable style={styles.change}>
+						<Ionicons name="pencil-sharp" size={20} />
+					</Pressable>
+				</View>
+				<Text style={styles.paragraphe}>Lore Ipsum</Text>
+				<Spacer space={20} />
+				<Text style={styles.subtitle}>Reminders</Text>
+				<Spacer space={20} />
+				<View style={styles.reminders}>
+					<Text style={styles.remtxt}>
+						No reminders set for this plant yet.
+					</Text>
+					<Link href="/page" style={styles.remlink}>
+						Set reminders
+					</Link>
+				</View>
+				<Spacer space={25} />
+				{/* <Text style={styles.subtitle}>Custom</Text>
+				<Spacer space={20} />
+				<View
+					style={[styles.reminders, { elevation: 3, shadowColor: "#E063E3" }]}
+				></View> */}
+				{/* 
+			<Text>Name:</Text>
+			<TextInput
+				placeholder="facultative"
+				clearButtonMode="always"
+				value={name}
+				onChangeText={setName}
+			/>
+
+			<Text>Select reminders:</Text>
+			<View style={styles.reminderBox}>
+				{Object.keys(reminders).map((key) => (
+					<Reminder
+						key={key}
+						reminder={reminders[key].value}
+						setReminder={(val) => updateReminder(key, "value", val)}
+					>
+						<Text>{key}</Text>
+					</Reminder>
+				))}
+			</View>
+			{/* Error 
+			<View style={!error && { height: 0 }}>
+				<View style={{ height: 20, alignContent: "center" }}>
+					<Text>{error}</Text>
+				</View>
+			</View>
+			<ScrollView>
+				{Object.entries(reminders).map(([key, r]) =>
+					r.value !== null ? (
+						<ReminderDetail
+							key={key}
+							name={key}
+							modeIsTime={!["sun", "shade"].includes(key)}
+							state={r.value}
+							setState={(val) => updateReminder(key, "value", val)}
+							remindTime={r.timer}
+							setReminderTime={(val) => updateReminder(key, "timer", val)}
+							schedule={r.schedule}
+							setSchedule={(val) => updateReminder(key, "schedule", val)}
+						>
+							{r.hasUnit && (
+								<Dropdown
+									style={styles.dropdown}
+									value={r.unit}
+									data={local_data}
+									valueField="value"
+									labelField="label"
+									onChange={(item) => updateReminder(key, "unit", item.value)}
+								/>
+							)}
+						</ReminderDetail>
+					) : null
+				)}
+
+				{/* More Info Input 
+				<TextInput
+					placeholder="Add extra infos"
+					multiline
+					numberOfLines={4}
+					maxLength={160}
+					onChangeText={setMoreInfo}
+					value={moreInfo}
+					style={styles.textInput}
+				/>
+				<View style={{ paddingBottom: 150 }} />
+			</ScrollView>
+
+			<AddPlantButton
+				species={plante}
+				name={name}
+				moreInfo={moreInfo}
+				water={reminders.water}
+				fog={reminders.fog}
+				sun={reminders.sun}
+				shade={reminders.shade}
+				error={error}
+				setError={setError}
+			/> */}
+			</View>
+			<View style={styles.CancelTabBar}>
+				<View style={[styles.btn, { backgroundColor: "#E6C5C5", width: 58 }]}>
+					<Image
+						source={require("../../../assets/images/icons/Calque_1.png")}
+						style={{ height: 25, width: 15 }}
+					/>
+				</View>
+				<View style={[styles.btn, { backgroundColor: "#C8C97F" }]}>
+					<Text style={styles.txtBar}>Set reminders</Text>
+				</View>
+				<View style={[styles.btn, { backgroundColor: "#fff" }]}>
+					<Text style={styles.txtBar}>Add</Text>
+				</View>
+			</View>
+		</>
+	);
+}
 
 const styles = StyleSheet.create({
+	img: {
+		height: 250,
+		width: "100%",
+		resizeMode: "cover",
+	},
 	container: {
 		flex: 1,
 		backgroundColor: "#ecebe0",
-		paddingHorizontal: screenWidth * 0.04,
+		paddingHorizontal: 20,
+	},
+	header: {
+		alignItems: "center",
+		flexDirection: "row",
+		width: "100%",
+		justifyContent: "space-between",
+		paddingVertical: 15,
 	},
 	title: {
-		textAlign: "center",
 		fontSize: 23,
-		fontWeight: "500",
 		color: "#444600",
-		flex: 1,
+		fontWeight: "600",
 	},
-	icon: {
+	change: {
+		elevation: 12,
+		shadowColor: "#E063E3",
+		borderRadius: 20,
 		width: 30,
-	},
-	viewtitle: {
-		paddingVertical: 30,
-		borderBottomWidth: 1,
-		borderColor: "#DAD7BE",
-		flexDirection: "row",
-		justifyContent: "space-between",
+		height: 30,
 		alignItems: "center",
+		justifyContent: "center",
+		borderWidth: 1,
+		borderColor: "#fff",
+		backgroundColor: "#efeee7",
 	},
-	search: {
-		padding: 10,
+	CancelTabBar: {
 		flexDirection: "row",
-		backgroundColor: "#ffffff75",
-		height: 38,
-		borderRadius: 5,
+		height: 100,
+		backgroundColor: "#4d5813",
+		paddingHorizontal: 20,
 		alignItems: "center",
+		justifyContent: "space-evenly",
 	},
-	card: {
-		width: screenWidth * 0.45,
-		height: 170,
-		backgroundColor: "#DFDFBE",
+	btn: {
+		height: 58,
+		borderRadius: 29,
+		elevation: 5,
+		alignItems: "center",
 		justifyContent: "center",
-		borderRadius: 5,
-		marginBottom: 10,
+		paddingHorizontal: 25,
 	},
-	img: {
-		width: screenWidth * 0.45,
-		borderTopLeftRadius: 5,
-		borderTopRightRadius: 5,
-		height: 140,
-		resizeMode: "cover",
-	},
-	viewTxt: {
-		borderColor: "#C8C97F",
-		borderTopWidth: 1,
-		flex: 1,
-		alignContent: "center",
-		justifyContent: "center",
-	},
-	cardText: {
+	txtBar: {
+		fontSize: 20,
 		color: "#444600",
-		fontSize: 14,
-		textAlign: "center",
-		fontWeight: "300",
+		fontWeight: "600",
 	},
-	border: {
-		position: "absolute",
-		borderWidth: 2,
-		width: screenWidth * 0.45,
-		height: 170,
+	paragraphe: {
+		fontSize: 14,
+		padding: 10,
+		paddingVertical: 25,
+		color: "#444600",
+		textAlign: "center",
+
+		borderBottomWidth: 1,
+		borderTopWidth: 1,
+		borderColor: "#DAD7BE",
+	},
+	subtitle: {
+		fontSize: 16,
+		fontWeight: "700",
+		color: "#444600",
+	},
+	reminders: {
+		padding: 10,
 		borderRadius: 5,
-		borderColor: "#C8C97F",
+		borderWidth: 1,
+		borderColor: "#fff",
+		backgroundColor: "#efeee7",
+		flexDirection: "row",
+		justifyContent: "space-evenly",
+	},
+	remtxt: {
+		fontSize: 12,
+		color: "#4446008f",
+		fontStyle: "italic",
+	},
+	remlink: {
+		fontSize: 12,
+		color: "#0084b88c",
+		fontStyle: "italic",
+	},
+	back: { alignSelf: "flex-end", justifyContent: "flex-end" },
+	reminderBox: {
+		flexDirection: "row",
+		height: 100,
+		width: "90%",
+		alignSelf: "center",
+	},
+	dropdown: {
+		margin: 5,
+		height: 50,
+		width: 70,
+		backgroundColor: "#EEEEEE",
+		borderRadius: 22,
+		paddingHorizontal: 8,
+	},
+	textInput: {
+		padding: 10,
+		borderWidth: 2,
+		borderRadius: 15,
+		height: 100,
+		textAlignVertical: "top",
 	},
 });

@@ -14,10 +14,8 @@ export default function InitialLayout() {
 
 		if (!isSignedIn && !inAuthScreen) router.replace("/signup");
 		else if (isSignedIn && inAuthScreen)
-			router.replace("/(protected)/(tabs)/page");
-	}, [isLoaded, isSignedIn, segments]);
-
-	if (!isLoaded) return null;
+			router.replace("/(protected)/(tabs)/interiorPlants");
+	}, [isLoaded, isSignedIn]); //segments
 
 	return <Stack screenOptions={{ headerShown: false }} />;
 }

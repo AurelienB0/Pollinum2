@@ -1,9 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { PlatformPressable } from "@react-navigation/elements";
+
 import { useLinkBuilder, useTheme } from "@react-navigation/native";
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 	const { colors } = useTheme();
@@ -58,16 +58,13 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 						return (
 							<View style={[styles.layout, { flex: 2 }]} key={route.key}>
 								<View style={styles.InteJardin} key={route.key}>
-									<PlatformPressable
-										href={buildHref(route.name, route.params)}
-										accessibilityState={isFocused ? { selected: true } : {}}
-										accessibilityLabel={options.tabBarAccessibilityLabel}
-										testID={options.tabBarButtonTestID}
+									<Pressable
+										key={"Interior"}
 										onPress={() => {
 											setHomeFocused(true);
 											onPress();
 										}}
-										onLongPress={onLongPress}
+										style={styles.pressable}
 									>
 										<View
 											style={
@@ -81,17 +78,14 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 										>
 											<Ionicons name="home-outline" size={35} />
 										</View>
-									</PlatformPressable>
-									<PlatformPressable
-										href={buildHref(route.name, route.params)}
-										accessibilityState={isFocused ? { selected: true } : {}}
-										accessibilityLabel={options.tabBarAccessibilityLabel}
-										testID={options.tabBarButtonTestID}
+									</Pressable>
+									<Pressable
+										key={"Exterior"}
 										onPress={() => {
 											setHomeFocused(false);
 											onPress();
 										}}
-										onLongPress={onLongPress}
+										style={styles.pressable}
 									>
 										<View
 											style={
@@ -105,54 +99,41 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 										>
 											<Ionicons name="leaf-outline" size={35} />
 										</View>
-									</PlatformPressable>
+									</Pressable>
 								</View>
 							</View>
 						);
 
 					case "Add":
 						return (
-							<PlatformPressable
+							<Pressable
 								key={route.name}
-								href={buildHref(route.name, route.params)}
-								accessibilityState={isFocused ? { selected: true } : {}}
-								accessibilityLabel={options.tabBarAccessibilityLabel}
-								testID={options.tabBarButtonTestID}
 								onPress={onPress}
-								style={styles.layout}
+								style={styles.pressable}
 							>
 								<View style={[styles.btn, { backgroundColor: "#E6C5C5" }]}>
 									<Ionicons name="add" size={35} color={"#4D1332"} />
 								</View>
-							</PlatformPressable>
+							</Pressable>
 						);
 					case "Myplants":
 						return (
-							<PlatformPressable
+							<Pressable
 								key={route.name}
-								href={buildHref(route.name, route.params)}
-								accessibilityState={isFocused ? { selected: true } : {}}
-								accessibilityLabel={options.tabBarAccessibilityLabel}
-								testID={options.tabBarButtonTestID}
 								onPress={onPress}
-								style={styles.layout}
+								style={styles.pressable}
 							>
 								<View style={styles.btn}>
 									<Ionicons name="list-outline" size={35} color={"#444600"} />
 								</View>
-							</PlatformPressable>
+							</Pressable>
 						);
 					case "settings":
 						return (
-							<PlatformPressable
+							<Pressable
 								key={route.name}
-								href={buildHref(route.name, route.params)}
-								accessibilityState={isFocused ? { selected: true } : {}}
-								accessibilityLabel={options.tabBarAccessibilityLabel}
-								testID={options.tabBarButtonTestID}
 								onPress={onPress}
-								onLongPress={onLongPress}
-								style={styles.layout}
+								style={styles.pressable}
 							>
 								<View style={styles.btn}>
 									<Ionicons
@@ -161,24 +142,19 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 										color={"#444600"}
 									/>
 								</View>
-							</PlatformPressable>
+							</Pressable>
 						);
 					default:
 						return (
-							<PlatformPressable
+							<Pressable
 								key={route.name}
-								href={buildHref(route.name, route.params)}
-								accessibilityState={isFocused ? { selected: true } : {}}
-								accessibilityLabel={options.tabBarAccessibilityLabel}
-								testID={options.tabBarButtonTestID}
 								onPress={onPress}
-								onLongPress={onLongPress}
-								style={styles.layout}
+								style={styles.pressable}
 							>
 								<View style={styles.btn}>
 									<Ionicons name="cube" size={35} color={"#444600"} />
 								</View>
-							</PlatformPressable>
+							</Pressable>
 						);
 				}
 			})}
@@ -225,5 +201,11 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		padding: 10,
 		elevation: 5,
+	},
+	pressable: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+		opacity: 1,
 	},
 });

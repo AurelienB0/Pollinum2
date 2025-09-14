@@ -3,6 +3,7 @@
 import { useSession } from "@clerk/clerk-expo";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import { createContext, useContext, useEffect, useState } from "react";
+import { Text, View } from "react-native";
 
 type SupabaseContext = {
 	supabase: SupabaseClient | null;
@@ -42,14 +43,13 @@ export default function SupabaseProvider({ children }: Props) {
 
 	return (
 		<Context.Provider value={{ supabase, isLoaded }}>
-			{/* {!isLoaded ? (
+			{!isLoaded ? (
 				<View style={{ flex: 1, margin: 20 }}>
 					<Text>Loading....</Text>
 				</View>
 			) : (
 				children
-			)} */}
-			{children}
+			)}
 		</Context.Provider>
 	);
 }

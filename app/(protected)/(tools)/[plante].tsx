@@ -1,18 +1,22 @@
 "use client";
-import { useState } from "react";
+import { allImages } from "@/assets/images/plantsImports";
+import Spacer from "@/components/Spacer";
+import { Ionicons } from "@expo/vector-icons";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { useRef, useState } from "react";
 import {
+	Image,
+	Keyboard,
+	KeyboardAvoidingView,
+	Platform,
 	Pressable,
 	ScrollView,
 	StyleSheet,
 	Text,
 	TextInput,
+	TouchableWithoutFeedback,
 	View,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import Reminder, { ReminderDetail } from "@/components/reminder";
-import { Dropdown } from "react-native-element-dropdown";
-import AddPlantButton from "@/components/addPlantButton";
 
 type ReminderData = {
 	value: string | null;
@@ -23,15 +27,17 @@ type ReminderData = {
 	last_care: null;
 };
 
-export default function Home() {
+export default function P() {
 	const router = useRouter();
 	const params = useLocalSearchParams();
+
 	const plante = Array.isArray(params.plante)
 		? params.plante[0]
 		: params.plante ?? "";
+	const inputRef = useRef<TextInput>(null);
 
 	const [moreInfo, setMoreInfo] = useState("");
-	const [name, setName] = useState("");
+	const [name, setName] = useState(plante);
 	const [error, setError] = useState<string | null>(null);
 
 	const [reminders, setReminders] = useState<Record<string, ReminderData>>({
@@ -89,16 +95,72 @@ export default function Home() {
 	];
 
 	return (
-		<View style={styles.container}>
-			{/* Header */}
-			<View style={styles.header}>
-				<Pressable style={styles.back} onPress={() => router.back()}>
-					<Ionicons name="arrow-back" size={50} />
-				</Pressable>
-				<Text style={{ alignSelf: "center" }}>{plante}</Text>
-			</View>
+		<>
+			<KeyboardAvoidingView
+				behavior={Platform.OS === "ios" ? "padding" : "height"}
+				style={{ flex: 1 }}
+				keyboardVerticalOffset={30}
+			>
+				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+					<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+						<Image
+							style={styles.img}
+							source={
+								allImages[plante] ? allImages[plante] : allImages["marguerite"]
+							}
+						/>
+						<View style={styles.container}>
+							<View style={styles.header}>
+								<TextInput
+									ref={inputRef}
+									style={styles.title}
+									value={name}
+									onChangeText={setName}
+									selectTextOnFocus={true}
+								/>
 
-			{/* Name Input */}
+								<Pressable
+									style={styles.change}
+									onPress={() => {
+										inputRef.current?.focus();
+									}}
+								>
+									<Ionicons name="pencil-sharp" size={20} />
+								</Pressable>
+							</View>
+							<Text style={styles.paragraphe}>Lore Ipsum</Text>
+							<Spacer space={20} />
+							<Text style={styles.subtitle}>Reminders</Text>
+							<Spacer space={20} />
+							<View style={styles.reminders}>
+								<Text style={styles.remtxt}>
+									No reminders set for this plant yet.
+								</Text>
+								<Link href="/page" style={styles.remlink}>
+									Set reminders
+								</Link>
+							</View>
+							<Spacer space={25} />
+							{/* <Text style={styles.subtitle}>Custom</Text>
+				<Spacer space={20} />
+				<View
+					style={[styles.reminders, { elevation: 3, shadowColor: "#E063E3" }]}
+				></View> */}
+							<Text style={styles.subtitle}>Additional info</Text>
+							<Spacer space={20} />
+							<View style={styles.reminders}>
+								<TextInput
+									placeholder="Add extra infos"
+									multiline
+									numberOfLines={4}
+									maxLength={170}
+									onChangeText={setMoreInfo}
+									value={moreInfo}
+									style={styles.textInput}
+								/>
+							</View>
+
+							{/* 
 			<Text>Name:</Text>
 			<TextInput
 				placeholder="facultative"
@@ -107,7 +169,6 @@ export default function Home() {
 				onChangeText={setName}
 			/>
 
-			{/* Reminder Selection */}
 			<Text>Select reminders:</Text>
 			<View style={styles.reminderBox}>
 				{Object.keys(reminders).map((key) => (
@@ -120,13 +181,12 @@ export default function Home() {
 					</Reminder>
 				))}
 			</View>
-			{/* Error */}
+			{/* Error 
 			<View style={!error && { height: 0 }}>
 				<View style={{ height: 20, alignContent: "center" }}>
 					<Text>{error}</Text>
 				</View>
 			</View>
-			{/* Reminder Details */}
 			<ScrollView>
 				{Object.entries(reminders).map(([key, r]) =>
 					r.value !== null ? (
@@ -155,7 +215,7 @@ export default function Home() {
 					) : null
 				)}
 
-				{/* More Info Input */}
+				{/* More Info Input 
 				<TextInput
 					placeholder="Add extra infos"
 					multiline
@@ -168,7 +228,6 @@ export default function Home() {
 				<View style={{ paddingBottom: 150 }} />
 			</ScrollView>
 
-			{/* Save Button */}
 			<AddPlantButton
 				species={plante}
 				name={name}
@@ -179,14 +238,131 @@ export default function Home() {
 				shade={reminders.shade}
 				error={error}
 				setError={setError}
-			/>
-		</View>
+			/> */}
+						</View>
+					</ScrollView>
+				</TouchableWithoutFeedback>
+			</KeyboardAvoidingView>
+			<View style={styles.CancelTabBar}>
+				<Pressable
+					style={[styles.btn, { backgroundColor: "#E6C5C5", width: 58 }]}
+					onPress={() => {
+						router.back();
+					}}
+				>
+					<Image
+						source={require("../../../assets/images/icons/Calque_1.png")}
+						style={{ height: 25, width: 15 }}
+					/>
+				</Pressable>
+				<View style={[styles.btn, { backgroundColor: "#C8C97F" }]}>
+					<Text style={styles.txtBar}>Set reminders</Text>
+				</View>
+				<View style={[styles.btn, { backgroundColor: "#fff" }]}>
+					<Text style={styles.txtBar}>Add</Text>
+				</View>
+			</View>
+		</>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: { flex: 1 },
-	header: { alignItems: "center", flexDirection: "row" },
+	img: {
+		height: 250,
+		width: "100%",
+		resizeMode: "cover",
+	},
+	container: {
+		flex: 1,
+		backgroundColor: "#ecebe0",
+		paddingHorizontal: 20,
+	},
+	header: {
+		alignItems: "center",
+		flexDirection: "row",
+		width: "100%",
+		justifyContent: "space-between",
+		paddingVertical: 15,
+	},
+	title: {
+		width: "90%",
+		fontSize: 23,
+		color: "#444600",
+		fontWeight: "600",
+		includeFontPadding: false,
+		marginVertical: -10, //against default padding
+	},
+	change: {
+		elevation: 12,
+		shadowColor: "#E063E3",
+		borderRadius: 20,
+		width: 30,
+		height: 30,
+		alignItems: "center",
+		justifyContent: "center",
+		borderWidth: 1,
+		borderColor: "#fff",
+		backgroundColor: "#efeee7",
+	},
+	CancelTabBar: {
+		flexDirection: "row",
+		position: "absolute",
+		bottom: 0,
+		width: "100%",
+		height: 100,
+		backgroundColor: "#4d5813",
+		paddingHorizontal: 20,
+		alignItems: "center",
+		justifyContent: "space-evenly",
+	},
+	btn: {
+		height: 58,
+		borderRadius: 29,
+		elevation: 5,
+		alignItems: "center",
+		justifyContent: "center",
+		paddingHorizontal: 25,
+	},
+	txtBar: {
+		fontSize: 20,
+		color: "#444600",
+		fontWeight: "600",
+	},
+	paragraphe: {
+		fontSize: 14,
+		padding: 10,
+		paddingVertical: 25,
+		color: "#444600",
+		textAlign: "center",
+		fontStyle: "italic",
+		borderBottomWidth: 1,
+		borderTopWidth: 1,
+		borderColor: "#DAD7BE",
+	},
+	subtitle: {
+		fontSize: 16,
+		fontWeight: "700",
+		color: "#444600",
+	},
+	reminders: {
+		padding: 10,
+		borderRadius: 5,
+		borderWidth: 1,
+		borderColor: "#fff",
+		backgroundColor: "#efeee7",
+		flexDirection: "row",
+		justifyContent: "space-evenly",
+	},
+	remtxt: {
+		fontSize: 12,
+		color: "#4446008f",
+		fontStyle: "italic",
+	},
+	remlink: {
+		fontSize: 12,
+		color: "#0084b88c",
+		fontStyle: "italic",
+	},
 	back: { alignSelf: "flex-end", justifyContent: "flex-end" },
 	reminderBox: {
 		flexDirection: "row",
@@ -203,10 +379,11 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 8,
 	},
 	textInput: {
-		padding: 10,
-		borderWidth: 2,
-		borderRadius: 15,
-		height: 100,
+		includeFontPadding: false,
+		flex: 1,
 		textAlignVertical: "top",
+		fontSize: 14,
+		paddingHorizontal: 15,
+		color: "#444600ff",
 	},
 });

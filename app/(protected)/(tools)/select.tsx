@@ -19,7 +19,7 @@ import allObjects from "../../../assets/allPlantsObject";
 
 const screenWidth = Dimensions.get("window").width;
 
-const page = () => {
+const Page = () => {
 	const screenWidth = Dimensions.get("window").width;
 	const router = useRouter();
 	const [inputList, setInputList] = useState<typeof allObjects>([]);
@@ -92,7 +92,7 @@ const page = () => {
 										}
 									/>
 									<View style={styles.viewTxt}>
-										<Text style={styles.cardText}>{item.name}</Text>{" "}
+										<Text style={styles.cardText}>{item.name}</Text>
 									</View>
 								</View>
 								<View style={styles.border}></View>
@@ -108,7 +108,7 @@ const page = () => {
 	);
 };
 
-export default page;
+export default Page;
 
 const styles = StyleSheet.create({
 	container: {

@@ -39,7 +39,7 @@ export default function Page() {
 			});
 			if (setActive && createdSessionId) {
 				setActive({ session: createdSessionId });
-				router.replace("/(protected)/(tabs)");
+				router.replace("/(protected)/(tabs)/interiorPlants");
 			}
 		} catch (error) {
 			console.error("OAuth error :", error);
@@ -97,7 +97,7 @@ export default function Page() {
 			// and redirect the user
 			if (signUpAttempt.status === "complete") {
 				await setActive({ session: signUpAttempt.createdSessionId });
-				router.replace("/");
+				//router.replace("/(protected)/(tabs)/interiorPlants");
 			} else {
 				// If the status is not complete, check why. User may need to
 				// complete further steps.
@@ -157,6 +157,7 @@ export default function Page() {
 		<KeyboardAvoidingView
 			behavior={Platform.OS === "ios" ? "padding" : "height"}
 			style={{ flex: 1 }}
+			keyboardVerticalOffset={30}
 		>
 			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 				<ScrollView contentContainerStyle={[styles.container, { flexGrow: 1 }]}>
@@ -318,7 +319,7 @@ const styles = StyleSheet.create({
 		borderRadius: 100,
 		backgroundColor: "#ecebe050",
 		paddingVertical: 15,
-		paddingHorizontal: 80,
+		paddingHorizontal: "20%",
 		borderWidth: 1,
 		borderColor: "#cfcec3ff",
 		flexDirection: "row",
@@ -365,7 +366,7 @@ const styles = StyleSheet.create({
 	},
 	already: {
 		flexDirection: "row",
-		justifyContent: "space-evenly",
+		justifyContent: "space-around",
 		paddingHorizontal: 70,
 	},
 	signin: {
