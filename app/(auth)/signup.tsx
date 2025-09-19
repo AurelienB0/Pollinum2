@@ -173,16 +173,12 @@ export default function Page() {
 								color={"#000000ff"}
 								style={{ opacity: 0.55 }}
 							/>
-							<Text style={{ fontSize: 15, opacity: 0.55 }}>
-								Sign up with Google
-							</Text>
+							<Text style={styles.services}>Sign up with Google</Text>
 						</TouchableOpacity>
 						<Spacer space={15} />
 						<TouchableOpacity onPress={handleGoogleSignIn} style={styles.auth}>
 							<Ionicons name="logo-apple" size={20} style={{ opacity: 0.55 }} />
-							<Text style={{ fontSize: 15, opacity: 0.55 }}>
-								Sign up with Apple
-							</Text>
+							<Text style={styles.services}>Sign up with Apple</Text>
 						</TouchableOpacity>
 						{/* text fields */}
 						<Spacer space={25} />
@@ -261,11 +257,11 @@ export default function Page() {
 					</View>
 
 					<View style={styles.already}>
-						<Text
-							style={{ textAlign: "center", fontSize: 12, color: "#444600" }}
-						>
+						<Text style={[styles.signin, { color: "#444600" }]}>
 							Already have an account ?
 						</Text>
+						<View style={{ width: 10 }} />
+
 						<Link href="/signin" style={styles.signin}>
 							<Text>Sign in</Text>
 						</Link>
@@ -289,6 +285,7 @@ const styles = StyleSheet.create({
 		fontSize: 30,
 		fontWeight: "500",
 		color: "#849A10",
+		fontFamily: "UrbanistSemiBold",
 	},
 	card: {
 		backgroundColor: "#ffffff",
@@ -302,6 +299,7 @@ const styles = StyleSheet.create({
 		fontSize: 30,
 		fontWeight: "500",
 		color: "#2a2b03",
+		fontFamily: "UrbanistSemiBold",
 	},
 	code: {
 		backgroundColor: "#ecebe0",
@@ -315,6 +313,11 @@ const styles = StyleSheet.create({
 		color: "#695a27",
 		alignSelf: "center",
 	},
+	services: {
+		fontSize: 15,
+		color: "#444600",
+		fontFamily: "UrbanistMedium",
+	},
 	auth: {
 		borderRadius: 100,
 		backgroundColor: "#ecebe050",
@@ -325,6 +328,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-evenly",
+		elevation: 5,
 	},
 	field: {
 		backgroundColor: "#ecebe0",
@@ -332,6 +336,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 15,
 		borderRadius: 5,
 		fontSize: 12,
+		fontFamily: "UrbanistRegular",
 		color: "#695a2799",
 		flexDirection: "row",
 		height: 45,
@@ -339,38 +344,40 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		flex: 1,
-		paddingVertical: 0,
 		fontSize: 12,
 		color: "#00000099",
 	},
 	error: {
 		backgroundColor: "#f8e4e4ff",
 		borderRadius: 5,
-
 		padding: 20,
 	},
 	agreement: {
 		fontSize: 10,
 		color: "#695a2799",
 		textAlign: "center",
+		fontFamily: "UrbanistMedium",
 	},
 	btn: {
+		height: 61,
 		paddingVertical: 15,
 		backgroundColor: "#4d5813",
-		borderRadius: 200,
+		borderRadius: 32,
 	},
 	txtbtn: {
 		textAlign: "center",
 		color: "#ffffff",
 		fontSize: 20,
+		fontFamily: "UrbanistSemiBold",
 	},
 	already: {
 		flexDirection: "row",
-		justifyContent: "space-around",
+		justifyContent: "center",
 		paddingHorizontal: 70,
 	},
 	signin: {
 		color: "#2a8db4",
 		fontSize: 12,
+		fontFamily: "UrbanistRegular",
 	},
 });

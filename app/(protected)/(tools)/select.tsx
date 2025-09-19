@@ -62,7 +62,7 @@ const Page = () => {
 					placeholder="Search by name"
 					clearButtonMode="always"
 					value={searchBarValue}
-					style={{ includeFontPadding: false }}
+					style={styles.txtsearch}
 					onChangeText={(query) => updateSearch(query)}
 				/>
 			</View>
@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
 		fontWeight: "500",
 		color: "#444600",
 		flex: 1,
+		fontFamily: "UrbanistSemiBold",
 	},
 	icon: {
 		width: 30,
@@ -139,6 +140,16 @@ const styles = StyleSheet.create({
 		height: 38,
 		borderRadius: 5,
 		alignItems: "center",
+		borderWidth: 1,
+		borderColor: "#DAD7BE",
+		elevation: 3,
+	},
+	txtsearch: {
+		paddingLeft: 10,
+		color: "#2a2b03a6",
+		includeFontPadding: false,
+		fontFamily: "UrbanistRegular",
+		fontSize: 12,
 	},
 	card: {
 		width: screenWidth * 0.45,
@@ -167,6 +178,7 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		textAlign: "center",
 		fontWeight: "300",
+		fontFamily: "UrbanistRegular",
 	},
 	border: {
 		position: "absolute",
